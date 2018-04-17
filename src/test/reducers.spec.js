@@ -1,5 +1,5 @@
 import reducer from '../reducers/index'
-import {DRAW_TILES, MOVE_TO_RACK} from '../constants/ActionTypes'
+import {DRAW_TILES, MOVE_TO_RACK, MOVE_TO_BOARD} from '../constants/ActionTypes'
 
 describe('reducers', () => {
   test('returns intial state if state is undefined', () => {
@@ -38,23 +38,26 @@ describe('reducers', () => {
       };
     })
 
-    test('moveToRack moves tile object into rack from play', () =>{
+    test('moveToRack moves tile object into rack from play', () => {
       const action = {
         type: MOVE_TO_RACK,
         payload: {47: "r"}
-      }
+      };
       const { rack, inPlay } = reducer(state, action);
 
-      expect(rack).toContain({47:"r"});
-      expect(inPlay).not.toContain({47:"r"});
+      expect(rack).toEqual([{33: "g"}, {47:"r"}]);
+      expect(inPlay).not.toEqual({47:"r"});
+    })
 
+    test('moveToInPlay moves tile object into play from rack', () => {
+      const action = {
+        type: MOVE_TO_BOARD,
+        payload: {33: "g"}
+      };
+      const { rack, inPlay } = reducer(state, action)
 
-
+      expect(inPlay).toEqual([{47:"r"}, {33: "g"}]);
+      expect(rack).not.toContain({33:"g"});
     })
   })
-
-
-
-
-
 })

@@ -20,11 +20,15 @@ const rootReducer = (state = initialState, action) => {
     }
     case MOVE_TO_RACK: {
       const tileToMove = action.payload;
-      const inPlay = [ ...state.inPlay ];
-      const updatedInPlay = inPlay.filter((tile) => tile !== tileToMove)
-      const updatedRack = [ ...state.rack, tileToMove ]
-
-      return Object.assign({}, state, {rack: updatedRack}, { inPlay: updatedInPlay })
+      const inPlay = [ ...state.inPlay ].filter(tile => tile !== tileToMove);
+      const rack = [ ...state.rack, tileToMove ]
+      return { ...state, rack, inPlay };
+    }
+    case MOVE_TO_BOARD: {
+      const tileToMove = action.payload;
+      const inPlay = [ ...state.inPlay, tileToMove ];
+      const rack = [ ...state.rack ].filter(tile => tile !== tileToMove);
+      return { ...state, rack, inPlay }
     }
     default:
       return state;
